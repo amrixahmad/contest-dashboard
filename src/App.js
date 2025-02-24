@@ -4,7 +4,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Layout from './components/Layout/Layout';
 import Leaderboard from './pages/Leaderboard';
-import Login from './pages/Login';
+import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
 import Analytics from './pages/dashboard/Analytics';
 import Testing from './pages/dashboard/Testing';
 
@@ -29,6 +30,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Leaderboard />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
               <Route
                 path="/dashboard/analytics"
                 element={

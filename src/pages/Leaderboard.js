@@ -9,15 +9,36 @@ import {
   TableRow,
   Paper,
   Typography,
-  Box
+  Box,
+  CircularProgress,
+  Alert
 } from '@mui/material';
-import { api } from '../services/dummyData';
+import { leaderboardService } from '../services/leaderboardService';
 
 const Leaderboard = () => {
-  const { data: leaderboard, isLoading, error } = useQuery('leaderboard', api.getLeaderboard);
+  const { 
+    data: leaderboard, 
+    isLoading, 
+    error 
+  } = useQuery('leaderboard', leaderboardService.getLeaderboard);
 
-  if (isLoading) return <Typography>Loading...</Typography>;
-  if (error) return <Typography color="error">Error loading leaderboard</Typography>;
+  if (isLoading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ maxWidth: 1200, margin: '0 auto', p: 2 }}>
+        <Alert severity="error">
+          Error loading leaderboard: {error.message || 'Please try again later'}
+        </Alert>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ maxWidth: 1200, margin: '0 auto', p: 2 }}>
@@ -45,10 +66,10 @@ const Leaderboard = () => {
                 sx={{ backgroundColor: index < 3 ? 'rgba(255, 215, 0, 0.1)' : 'inherit' }}
               >
                 <TableCell>{index + 1}</TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell align="right">{user.oranges}</TableCell>
-                <TableCell align="right">{user.pledges}</TableCell>
-                <TableCell align="right">{user.journals}</TableCell>
+                <TableCell>{user.first_name}</TableCell>
+                <TableCell align="right">{user.total_oranges}</TableCell>
+                <TableCell align="right">{user.pledge_count}</TableCell>
+                <TableCell align="right">{user.journal_count}</TableCell>
               </TableRow>
             ))}
           </TableBody>

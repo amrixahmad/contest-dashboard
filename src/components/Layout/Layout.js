@@ -28,7 +28,13 @@ const Layout = ({ children }) => {
               <Button color="inherit" onClick={() => navigate('/dashboard/testing')}>
                 Testing
               </Button>
-              <Button color="inherit" onClick={logout}>
+              <Button 
+                color="inherit" 
+                onClick={() => {
+                  logout();
+                  navigate('/login');
+                }}
+              >
                 Logout
               </Button>
             </>

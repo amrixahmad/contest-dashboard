@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { config } from './environment';
 
-// Set base URL for API requests - using localhost for development
-axios.defaults.baseURL = 'http://localhost:3000';
+// Set base URL for API requests
+axios.defaults.baseURL = config.apiUrl;
 
 // Add request interceptor
 axios.interceptors.request.use(
@@ -17,16 +18,22 @@ axios.interceptors.request.use(
   }
 );
 
-// Add response interceptor
+// Add response interceptor for better error handling
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
+    const errorMessage = error.response?.data?.message || error.message || 'An error occurred';
+    
+    // Handle token expiration
     if (error.response?.status === 401) {
-      // Handle unauthorized access
       localStorage.removeItem('token');
       window.location.href = '/login';
     }
-    return Promise.reject(error);
+    
+    return Promise.reject({
+      message: errorMessage,
+      status: error.response?.status
+    });
   }
 );
 
